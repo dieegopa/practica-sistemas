@@ -1,3 +1,4 @@
+import axios from "axios";
 import React from "react";
 import clienteAxios from "../../config/axios";
 import {
@@ -10,7 +11,7 @@ import {
   SUBIR_ARCHIVO,
   LIMPIAR_STATE,
   AGREGAR_PASSWORD,
-  AGREGAR_DESCARGAS
+  AGREGAR_DESCARGAS,
 } from "../../types";
 import appContext from "./appContext";
 import AppReducer from "./appReducer";
@@ -46,7 +47,7 @@ const AppState = ({ children }) => {
     limpiarAlerta();
   };
 
-  const subirArchivos = async (formData, nombreArchivo) => {
+  /*const subirArchivos = async (formData, nombreArchivo) => {
     dispatch({
       type: SUBIR_ARCHIVO,
     });
@@ -68,22 +69,58 @@ const AppState = ({ children }) => {
     }
 
     limpiarAlerta();
+  };*/
+
+  const subirArchivos = async (datosFile) => {
+
+    dispatch({
+      type: SUBIR_ARCHIVO,
+    });
+
+
+    const data = {
+      base64String: datosFile.base64,
+    };
+
+    try{
+      const resultado = await axios.post("https://spn36s28g0.execute-api.eu-central-1.amazonaws.com/v1/archivos",data);
+      console.log(resultado);
+      const nombreArray = resultado.data.nombre.split('.');
+      const nombreCompletoDocumento = nombreArray[0];
+
+      dispatch({
+        type: SUBIR_ARCHIVO_EXITO,
+        payload: {
+          url: resultado.data.url,
+          nombre: nombreCompletoDocumento,
+        },
+      });
+    }catch (error) {
+      dispatch({
+        type: SUBIR_ARCHIVO_ERROR,
+        payload: error.response,
+      });
+    }
+
+
   };
 
   const crearEnlace = async () => {
     const data = {
       nombre: state.nombre,
-      nombre_original: state.nombre_original,
-      descargas: state.descargas,
-      password: state.password,
-      autor: state.autor,
+      url: state.url
     };
 
     try {
-      const resultado = await clienteAxios.post("/api/enlaces", data);
+      //const resultado = await clienteAxios.post("/api/enlaces", data);
+
+      const resultado = await axios.post("https://spn36s28g0.execute-api.eu-central-1.amazonaws.com/v1/enlaces", data);
+      console.log(resultado);
+
+
       dispatch({
         type: CREAR_ENLACE_EXITO,
-        payload: resultado.data.msg,
+        payload: resultado.data.estado,
       });
     } catch (error) {}
   };
@@ -106,8 +143,8 @@ const AppState = ({ children }) => {
   const agregarDescargas = (descargas) => {
     dispatch({
       type: AGREGAR_DESCARGAS,
-      payload: descargas
-    })
+      payload: descargas,
+    });
   };
 
   return (

@@ -8,7 +8,7 @@ import Alerta from "../components/Alerta";
 const Index = () => {
 
   const AppContext = React.useContext(appContext);
-  const { mensaje_archivo, url } = AppContext;
+  const { mensaje_archivo, url , nombre} = AppContext;
 
   return (
     <Layout>
@@ -20,13 +20,13 @@ const Index = () => {
               <span className="font-bold text-red-500 text-xl md:text-3xl uppercase">
                 Tu url es:
               </span>{" "}
-              {`${process.env.frontendURL}/enlaces/${url}`}
+              {`${process.env.frontendURL}/enlaces/${nombre}`}
             </p>
 
             <button
               onClick={() =>
                 navigator.clipboard.writeText(
-                  `${process.env.frontendURL}/enlaces/${url}`
+                  `${process.env.frontendURL}/enlaces/${nombre}`
                 )
               }
               type="button"

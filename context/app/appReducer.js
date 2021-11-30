@@ -33,8 +33,8 @@ const AppReducer = (state, action) => {
     case SUBIR_ARCHIVO_EXITO:
       return {
         ...state,
+        url: action.payload.url,
         nombre: action.payload.nombre,
-        nombre_original: action.payload.nombre_original,
         cargando: null,
       };
     case SUBIR_ARCHIVO_ERROR:

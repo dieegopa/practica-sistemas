@@ -8,7 +8,13 @@ import Alerta from "../components/Alerta";
 const Index = () => {
 
   const AppContext = React.useContext(appContext);
-  const { mensaje_archivo, url , nombre} = AppContext;
+  const { mensaje_archivo, url , nombre, crearEnlace} = AppContext;
+
+  React.useEffect(()=> {
+    if(nombre != '') {
+      crearEnlace();
+    }
+  },[nombre])
 
   return (
     <Layout>

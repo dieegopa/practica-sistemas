@@ -84,7 +84,7 @@ const AppState = ({ children }) => {
 
     try{
       const resultado = await axios.post("https://spn36s28g0.execute-api.eu-central-1.amazonaws.com/v1/archivos",data);
-      console.log(resultado);
+      //console.log(resultado);
       const nombreArray = resultado.data.nombre.split('.');
       const nombreCompletoDocumento = nombreArray[0];
 
@@ -106,16 +106,19 @@ const AppState = ({ children }) => {
   };
 
   const crearEnlace = async () => {
+
     const data = {
       nombre: state.nombre,
       url: state.url
     };
 
+    //console.log(data)
+
     try {
       //const resultado = await clienteAxios.post("/api/enlaces", data);
 
       const resultado = await axios.post("https://spn36s28g0.execute-api.eu-central-1.amazonaws.com/v1/enlaces", data);
-      console.log(resultado);
+      //console.log(resultado);
 
 
       dispatch({

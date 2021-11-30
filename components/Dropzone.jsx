@@ -5,7 +5,8 @@ import appContext from "../context/app/appContext";
 
 const Dropzone = () => {
   const AppContext = React.useContext(appContext);
-  const { mostarAlerta, subirArchivos, cargando, crearEnlace } = AppContext;
+  const { mostarAlerta, subirArchivos, cargando, crearEnlace, nombre, url } = AppContext;
+  const [estado , setEstado] = React.useState(false);
 
   const state = {
     file: null,
@@ -39,10 +40,11 @@ const Dropzone = () => {
         .then((result) => {
           file["base64"] = result;
           subirArchivos(file);
+          setEstado(true);
+          /*
           setTimeout(() => {
-            
-           crearEnlace();
-          }, 300);
+            crearEnlace();
+          }, 1000);*/
         })
         .catch((err) => {
           console.log(err);
@@ -52,14 +54,26 @@ const Dropzone = () => {
     }
   };
 
+
   return (
     <div className="items-center justify-center flex">
-      <input
-        className="font-bold bg-blue-700 w-full py-3 rounded-lg text-white my-10 hover:bg-blue-800 transition duration-500 ease-in-out"
-        type="file"
-        name="file"
-        onChange={handleFileInputChange}
-      />
+      {cargando ? (
+        <div className="block absolute top-16 left-1/2">
+          <div className="lds-ring">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+      ) : (
+        <input
+          className="font-bold bg-blue-700 w-full py-3 rounded-lg text-white my-10 hover:bg-blue-800 transition duration-500 ease-in-out"
+          type="file"
+          name="file"
+          onChange={handleFileInputChange}
+        />
+      )}
     </div>
   );
 };
